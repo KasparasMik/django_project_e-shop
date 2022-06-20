@@ -37,7 +37,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
 def add_cart(request, product_id):
     color = request.GET['color']  # GET request from product variation in cart
     size = request.GET['size']
-    return HttpResponse(color + ' ' + size)
+    return HttpResponse(color)
     exit()
     
     product = Product.objects.get(id=product_id) # get product
