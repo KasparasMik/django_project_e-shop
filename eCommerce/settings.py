@@ -143,3 +143,11 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+# SMTP CONFIGURATION
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # for Gmail
+EMAIL_HOST_USER = 'kasparas.test.web@gmail.com'
+EMAIL_HOST_PASSWORD = 'Geb2xbrxJJxy8CD'
+EMAIL_USE_TLS = True
