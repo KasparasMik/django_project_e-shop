@@ -146,8 +146,10 @@ MESSAGE_TAGS = {
 
 # SMTP CONFIGURATION
 
-EMAIL_HOST ='smtp.gmail.com'
-EMAIL_PORT ='587'  # for Gmail
-EMAIL_HOST_USER ='kasparas.test.web@gmail.com'
-EMAIL_HOST_PASSWORD = 'Testpassword123??'
+EMAIL_HOST ='smtp.office365.com'
+EMAIL_PORT ='587'  
+EMAIL_HOST_USER ='kasparas.developer@outlook.com'
+EMAIL_HOST_PASSWORD = '4vFHikSkye5unw7!'
 EMAIL_USE_TLS = True
+SECRET_KEY='ole!gm75#@gxgrxx3m0)k*x^9uxp87j3))ij^bh%u4v&r_=9op'
+DEBUG=True
