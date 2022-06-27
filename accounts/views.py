@@ -5,6 +5,8 @@ from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from carts.models import Cart, CartItem
 from carts.views import _cart_id
+from orders.models import Order, OrderProduct
+from .models import Account
 
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
@@ -55,23 +57,23 @@ def login(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        
+
         user = auth.authenticate(email=email, password=password)
-        
+
         if user is not None:
             try:
                 cart = Cart.objects.get(cart_id=_cart_id(request))
-                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()  # Ture or False
+                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
                 if is_cart_item_exists:
                     cart_item = CartItem.objects.filter(cart=cart)
-                    
-                    # Getting product variations by cart id
+
+                    # Getting the product variations by cart id
                     product_variation = []
                     for item in cart_item:
                         variation = item.variations.all()
                         product_variation.append(list(variation))
-                    
-                    # Get the cart items from the user to access his product variation
+
+                    # Get the cart items from the user to access his product variations
                     cart_item = CartItem.objects.filter(user=user)
                     ex_var_list = []
                     id = []
@@ -79,7 +81,7 @@ def login(request):
                         existing_variation = item.variations.all()
                         ex_var_list.append(list(existing_variation))
                         id.append(item.id)
-                    
+
                     for pr in product_variation:
                         if pr in ex_var_list:
                             index = ex_var_list.index(pr)
@@ -96,22 +98,23 @@ def login(request):
             except:
                 pass
             auth.login(request, user)
-            messages.success(request, "You are now logged in")
-            url = requests.META.get('HTTP_REFERER') # grab the previous url from where you came
+            messages.success(request, 'You are now logged in.')
+            url = request.META.get('HTTP_REFERER')
             try:
-                query = requests.utils.urlparse(url).query 
+                query = requests.utils.urlparse(url).query
                 # next=/cart/checkout/
                 params = dict(x.split('=') for x in query.split('&'))
                 if 'next' in params:
-                    next_page = params['next']
-                    return redirect(next_page)
+                    nextPage = params['next']
+                    return redirect(nextPage)
             except:
                 return redirect('dashboard')
         else:
-            messages.error(request, "Invalid login credentials")
+            messages.error(request, 'Invalid login credentials')
             return redirect('login')
-    
     return render(request, 'accounts/login.html')
+
+
 
 
 @login_required(login_url = 'login')
@@ -140,6 +143,14 @@ def activate(request, uidb64, token):
 
 @login_required(login_url = 'login')
 def dashboard(request):
+    orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
+    orders_count = orders.count()
+
+    # userprofile = UserProfile.objects.get(user_id=request.user.id)
+    # context = {
+    #     'orders_count': orders_count,
+    #     'userprofile': userprofile,
+    # }
     return render(request, 'accounts/dashboard.html')
 
 
