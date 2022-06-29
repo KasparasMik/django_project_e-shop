@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from carts.models import Cart, CartItem
 from carts.views import _cart_id
 from orders.models import Order, OrderProduct
-from .models import Account
+from .models import Account, UserProfile
 
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
@@ -30,6 +30,12 @@ def register(request):
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
             user.phone_number = phone_number
             user.save()
+            
+            # Create a user profile
+            profile = UserProfile()
+            profile.user_id = user.id
+            profile.profile_picture = 'default/default-user.png'
+            profile.save()
             
             # USER ACTIVATION
             current_site =  get_current_site(request)   # now we are using localhost
