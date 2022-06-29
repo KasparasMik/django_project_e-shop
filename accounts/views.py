@@ -147,11 +147,11 @@ def dashboard(request):
     orders_count = orders.count()
 
     # userprofile = UserProfile.objects.get(user_id=request.user.id)
-    # context = {
-    #     'orders_count': orders_count,
-    #     'userprofile': userprofile,
-    # }
-    return render(request, 'accounts/dashboard.html')
+    context = {
+        'orders_count': orders_count,
+        # 'userprofile': userprofile,
+    }
+    return render(request, 'accounts/dashboard.html', context)
 
 
 def forgot_password(request):
