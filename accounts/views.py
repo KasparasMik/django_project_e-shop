@@ -245,6 +245,7 @@ def edit_profile(request):
     else:
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=userprofile)
+        
     context = {
         'user_form': user_form,
         'profile_form': profile_form,
