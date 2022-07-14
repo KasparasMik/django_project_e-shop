@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-co0kt8fuei=w((($p#dx)5gp)u)_s3$_vk6666dxi%l1o*rw*a'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool) 
 
 ALLOWED_HOSTS = []
 
@@ -147,10 +148,9 @@ MESSAGE_TAGS = {
 
 # SMTP CONFIGURATION
 
-EMAIL_HOST ='smtp-relay.sendinblue.com'
-EMAIL_PORT ='587'  
-EMAIL_HOST_USER ='kasparas.test.web@gmail.com'
-EMAIL_HOST_PASSWORD = 'ATkNgJ0XYDILCRWZ'
-EMAIL_USE_TLS = True
-SECRET_KEY='ole!gm75#@gxgrxx3m0)k*x^9uxp87j3))ij^bh%u4v&r_=9op'
-DEBUG=True
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER =config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+SECRET_KEY= config('SECRET_KEY')
